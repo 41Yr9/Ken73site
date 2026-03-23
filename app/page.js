@@ -7,10 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const InteractiveScene = dynamic(() => import("./InteractiveScene"), {
-  ssr: false,
-  loading: () => <div style={{ width: "100%", height: "60vh", background: "#fafafa" }} />,
-});
+const CursorParticles = dynamic(() => import("./CursorParticles"), { ssr: false });
 
 /* ============================================
    Data
@@ -134,6 +131,8 @@ export default function Home() {
       cursor.style.top = e.clientY + "px";
       dot.style.left = e.clientX + "px";
       dot.style.top = e.clientY + "px";
+      document.documentElement.style.setProperty("--mx", e.clientX + "px");
+      document.documentElement.style.setProperty("--my", e.clientY + "px");
     };
     const addHover = () => cursor.classList.add("hover");
     const removeHover = () => cursor.classList.remove("hover");
@@ -405,6 +404,7 @@ export default function Home() {
       {/* Cursor */}
       <div ref={cursorRef} className="cursor" />
       <div ref={dotRef} className="cursor-dot" />
+      <CursorParticles />
 
       {/* Floating Orbs */}
       <div className="orbs">
@@ -437,11 +437,6 @@ export default function Home() {
           <a href={LINKS.appstore} target="_blank" rel="noopener noreferrer" className="cta-btn">App Store</a>
         </div>
         <div className="hero-scroll-line" />
-      </section>
-
-      {/* 3D Interactive Art */}
-      <section className="canvas-section">
-        <InteractiveScene />
       </section>
 
       <div className="divider" />
