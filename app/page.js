@@ -15,6 +15,28 @@ const CursorParticles = dynamic(() => import("./CursorParticles"), { ssr: false 
 
 const GITHUB_USERNAME = "41Yr9";
 
+const SKILL_ICONS = {
+  "React Native": "⚛️",
+  "Expo": "📱",
+  "TypeScript": "🔷",
+  "Next.js": "▲",
+  "React Navigation": "🧭",
+  "Python": "🐍",
+  "Flask": "🧪",
+  "Discord.py": "🤖",
+  "Playwright": "🎭",
+  "PostgreSQL": "🐘",
+  "MySQL": "🗄️",
+  "SQLite": "📦",
+  "Google Gemini AI": "✨",
+  "Supabase": "⚡",
+  "Render": "☁️",
+  "Docker": "🐳",
+  "Shopify": "🛒",
+  "RevenueCat": "💰",
+  "AdMob": "📊",
+};
+
 const SKILLS = {
   "モバイル & フロントエンド": [
     "React Native", "Expo", "TypeScript", "Next.js", "React Navigation",
@@ -44,6 +66,7 @@ const PROJECTS = [
     meta: ["App Store公開済み", "サブスク3プラン"],
     link: "https://apps.apple.com/jp/app/diger/id6756227679",
     repo: "diger-website",
+    img: "/images/diger.png",
   },
   {
     num: "02",
@@ -54,6 +77,7 @@ const PROJECTS = [
     meta: ["クラウド履歴保存", "サブスク課金"],
     link: null,
     repo: "formlab-page",
+    img: "/images/formlab.png",
   },
   {
     num: "03",
@@ -75,6 +99,7 @@ const TIMELINE = [
     desc: "家のノートPCでサーバーを立て約2年間Owner運営。MySQLで経済システム構築。英語のRedditを読みながらエラー解決。",
     tech: "Java / Spigot / MySQL",
     active: false,
+    img: "/images/minecraft1.png",
   },
   {
     era: "中学生時代",
@@ -83,6 +108,7 @@ const TIMELINE = [
     desc: "Arduino搭載の瓦割りロボットを製作。地域予選から全国大会まで勝ち進み優勝。",
     tech: "Arduino / Python",
     active: false,
+    img: "/images/robocup.jpg",
   },
   {
     era: "高校生時代",
@@ -91,6 +117,7 @@ const TIMELINE = [
     desc: "Fortnite/Apex Esportsシーンでセミプロ兼デザイナーとして活動。超有名チーム所属プロのヘッダーも担当。",
     tech: "Adobe Photoshop",
     active: false,
+    img: "/images/esports.png",
   },
   {
     era: "大学生時代（現在）",
@@ -99,6 +126,7 @@ const TIMELINE = [
     desc: "アパレルブランド「TIER」運営を経て、エンジニアとしてモバイルアプリ開発に注力。DiGer, FormLabをリリース。",
     tech: "React Native / TypeScript / Python / Supabase",
     active: true,
+    img: "/images/tier.jpg",
   },
 ];
 
@@ -492,7 +520,7 @@ export default function Home() {
             <div key={cat} className="skill-group">
               <h3 className="skill-group-title">{cat}</h3>
               <div className="skill-group-list">
-                {list.map((s) => <span key={s} className="skill-group-item">{s}</span>)}
+                {list.map((s) => <span key={s} className="skill-group-item">{SKILL_ICONS[s] || "•"} {s}</span>)}
               </div>
             </div>
           ))}
@@ -518,6 +546,7 @@ export default function Home() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
+                {p.img && <img src={p.img} alt={p.name} className="project-img" />}
                 <span className="project-num">{p.num}</span>
                 <div className="project-info">
                   <h3 className="project-title">{p.name}</h3>
@@ -552,6 +581,7 @@ export default function Home() {
               <p className="tl-era">{t.era}</p>
               <h3 className="tl-title">{t.title}</h3>
               <span className="tl-badge">{t.badge}</span>
+              {t.img && <img src={t.img} alt={t.title} className="tl-img" />}
               <p className="tl-desc">{t.desc}</p>
               <p className="tl-tech">{t.tech}</p>
             </div>

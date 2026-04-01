@@ -39,20 +39,6 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(
-    800px circle at var(--mx, -1000px) var(--my, -1000px),
-    rgba(107, 47, 160, 0.1),
-    rgba(139, 92, 246, 0.04) 40%,
-    transparent 65%
-  );
-  pointer-events: none;
-  z-index: 9998;
-}
-
 a {
   color: var(--text);
   text-decoration: none;
@@ -526,8 +512,8 @@ a {
 
 .project-item {
   display: grid;
-  grid-template-columns: auto 1fr auto;
-  gap: 3rem;
+  grid-template-columns: 48px auto 1fr auto;
+  gap: 2rem;
   align-items: center;
   padding: 3rem 0;
   border-bottom: 1px solid var(--border);
@@ -535,6 +521,19 @@ a {
   text-decoration: none;
   color: var(--text);
   cursor: none;
+}
+
+.project-img {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  transition: transform 0.4s var(--ease);
+}
+
+.project-item:hover .project-img {
+  transform: scale(1.1);
 }
 
 .project-item:first-child {
@@ -616,6 +615,22 @@ a {
   font-weight: 300;
   opacity: 0.3;
   transition: all 0.5s var(--ease);
+}
+
+/* ---- Timeline Image ---- */
+.tl-img {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  margin: 1rem 0;
+  object-fit: cover;
+  transition: transform 0.4s var(--ease);
+}
+
+.tl-item:hover .tl-img {
+  transform: scale(1.02);
 }
 
 /* ---- Timeline ---- */
