@@ -221,128 +221,89 @@ export default function Home() {
 
   // ---------- GSAP Animations ----------
   useEffect(() => {
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
     const ctx = gsap.context(() => {
 
-      // === Hero: character-by-character reveal ===
-      gsap.from(".hero-char", {
-        y: 80,
-        opacity: 0,
-        rotateX: -90,
-        stagger: 0.06,
-        duration: 1,
-        ease: "power3.out",
-        delay: 0.3,
-      });
+      // === Hero: character-by-character reveal (fromTo for reliable end state) ===
+      gsap.fromTo(".hero-char",
+        { y: isMobile ? 40 : 80, opacity: 0, ...(isMobile ? {} : { rotateX: -90 }) },
+        { y: 0, opacity: 1, ...(isMobile ? {} : { rotateX: 0 }), stagger: isMobile ? 0.04 : 0.06, duration: isMobile ? 0.6 : 1, ease: "power3.out", delay: 0.3 }
+      );
 
-      gsap.from(".hero-sub", {
-        y: 30,
-        opacity: 0,
-        duration: 0.8,
-        ease: "power3.out",
-        delay: 0.8,
-      });
+      gsap.fromTo(".hero-sub",
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.6, ease: "power3.out", delay: 0.6 }
+      );
 
-      gsap.from(".hero-typing-wrap", {
-        y: 20,
-        opacity: 0,
-        duration: 0.8,
-        ease: "power3.out",
-        delay: 1.0,
-      });
+      gsap.fromTo(".hero-typing-wrap",
+        { y: 15, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.6, ease: "power3.out", delay: 0.8 }
+      );
 
-      gsap.from(".hero-socials", {
-        y: 20,
-        opacity: 0,
-        duration: 0.8,
-        ease: "power3.out",
-        delay: 1.1,
-      });
+      gsap.fromTo(".hero-socials",
+        { y: 15, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.6, ease: "power3.out", delay: 0.9 }
+      );
 
-      gsap.from(".cta-btn", {
-        y: 20,
-        opacity: 0,
-        stagger: 0.12,
-        duration: 0.7,
-        ease: "power3.out",
-        delay: 1.2,
-      });
+      gsap.fromTo(".cta-btn",
+        { y: 15, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.1, duration: 0.5, ease: "power3.out", delay: 1.0 }
+      );
 
-      gsap.from(".hero-scroll-line", {
-        scaleY: 0,
-        opacity: 0,
-        duration: 1,
-        ease: "power3.out",
-        delay: 1.6,
-        transformOrigin: "top",
-      });
+      gsap.fromTo(".hero-scroll-line",
+        { scaleY: 0, opacity: 0 },
+        { scaleY: 1, opacity: 1, duration: 0.8, ease: "power3.out", delay: 1.3, transformOrigin: "top" }
+      );
 
-      // === Section reveals with ScrollTrigger ===
-      document.querySelectorAll(".gsap-section").forEach((section) => {
-        const label = section.querySelector(".section-label");
-        const title = section.querySelector(".section-title");
-        const desc = section.querySelector(".section-desc");
+      // === Shared fade-in helper ===
+      const fadeIn = (targets, vars) =>
+        gsap.fromTo(targets, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power3.out", ...vars });
 
-        ScrollTrigger.create({
-          trigger: section,
-          start: "top 80%",
-          once: true,
-          onEnter: () => {
-            const tl = gsap.timeline();
-            if (label) tl.fromTo(label, { x: -40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.7, ease: "power3.out" });
-            if (title) tl.fromTo(title, { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, "-=0.5");
-            if (desc) tl.fromTo(desc, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, "-=0.5");
-          },
-        });
+      // === Section reveals — batched into one ScrollTrigger per section ===
+      ScrollTrigger.batch(".gsap-section", {
+        start: "top 80%",
+        once: true,
+        onEnter: (batch) => batch.forEach((section) => {
+          const label = section.querySelector(".section-label");
+          const title = section.querySelector(".section-title");
+          const desc = section.querySelector(".section-desc");
+          const tl = gsap.timeline();
+          if (label) tl.fromTo(label, { x: -30, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: "power3.out" });
+          if (title) tl.fromTo(title, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, "-=0.3");
+          if (desc) tl.fromTo(desc, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, "-=0.3");
+        }),
       });
 
       // === About: stats count up ===
-      document.querySelectorAll(".stat-num").forEach((el) => {
-        const text = el.textContent;
-        const match = text.match(/(\d+)/);
-        if (!match) return;
-        const target = parseInt(match[0]);
-        const suffix = text.replace(match[0], "");
-
-        ScrollTrigger.create({
-          trigger: el,
-          start: "top 85%",
-          once: true,
-          onEnter: () => {
-            gsap.fromTo(el, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" });
-            const obj = { val: 0 };
-            gsap.to(obj, {
-              val: target,
-              duration: 1.5,
-              ease: "power2.out",
-              onUpdate: () => { el.textContent = Math.round(obj.val) + suffix; },
-            });
-          },
-        });
+      ScrollTrigger.batch(".stat-num", {
+        start: "top 85%",
+        once: true,
+        onEnter: (batch) => batch.forEach((el) => {
+          const text = el.textContent;
+          const match = text.match(/(\d+)/);
+          if (!match) return;
+          const target = parseInt(match[0]);
+          const suffix = text.replace(match[0], "");
+          fadeIn(el);
+          const obj = { val: 0 };
+          gsap.to(obj, {
+            val: target,
+            duration: 1.5,
+            ease: "power2.out",
+            onUpdate: () => { el.textContent = Math.round(obj.val) + suffix; },
+          });
+        }),
       });
 
-      // === About: detail items stagger ===
+      // === About: detail items + stat labels (single trigger) ===
       ScrollTrigger.create({
         trigger: ".about-detail-list",
         start: "top 80%",
         once: true,
         onEnter: () => {
-          gsap.fromTo(".about-detail-item",
-            { x: 40, opacity: 0 },
-            { x: 0, opacity: 1, stagger: 0.1, duration: 0.6, ease: "power3.out" }
-          );
-        },
-      });
-
-      // === About: stat labels ===
-      ScrollTrigger.create({
-        trigger: ".about-stats",
-        start: "top 85%",
-        once: true,
-        onEnter: () => {
-          gsap.fromTo(".stat-label",
-            { y: 15, opacity: 0 },
-            { y: 0, opacity: 1, stagger: 0.08, duration: 0.5, ease: "power3.out", delay: 0.3 }
-          );
+          fadeIn(".about-detail-item", { stagger: 0.08 });
+          fadeIn(".stat-label", { stagger: 0.06, delay: 0.2 });
         },
       });
 
@@ -351,12 +312,7 @@ export default function Home() {
         trigger: ".skills-grid",
         start: "top 80%",
         once: true,
-        onEnter: () => {
-          gsap.fromTo(".skill-group",
-            { y: 60, opacity: 0 },
-            { y: 0, opacity: 1, stagger: 0.2, duration: 0.8, ease: "power3.out" }
-          );
-        },
+        onEnter: () => fadeIn(".skill-group", { stagger: 0.15, duration: 0.6 }),
       });
 
       // === Projects: row slide in ===
@@ -364,50 +320,39 @@ export default function Home() {
         trigger: ".project-list",
         start: "top 85%",
         once: true,
-        onEnter: () => {
-          gsap.fromTo(".project-item",
-            { y: 50, x: -30, opacity: 0 },
-            { y: 0, x: 0, opacity: 1, stagger: 0.15, duration: 0.8, ease: "power3.out" }
-          );
-        },
+        onEnter: () => fadeIn(".project-item", { stagger: 0.12 }),
       });
 
-      // === Timeline: line draw ===
+      // === Timeline: line draw + batched items ===
       const timelineLine = document.querySelector(".timeline");
       if (timelineLine) {
         ScrollTrigger.create({
           trigger: timelineLine,
           start: "top 80%",
           once: true,
-          onEnter: () => {
-            timelineLine.classList.add("tl-animate");
-          },
+          onEnter: () => timelineLine.classList.add("tl-animate"),
         });
       }
 
-      // === Timeline items ===
-      document.querySelectorAll(".tl-item").forEach((item) => {
-        ScrollTrigger.create({
-          trigger: item,
-          start: "top 82%",
-          once: true,
-          onEnter: () => {
-            const dot = item.querySelector(".tl-dot");
-            const era = item.querySelector(".tl-era");
-            const title = item.querySelector(".tl-title");
-            const badge = item.querySelector(".tl-badge");
-            const desc = item.querySelector(".tl-desc");
-            const tech = item.querySelector(".tl-tech");
+      ScrollTrigger.batch(".tl-item", {
+        start: "top 82%",
+        once: true,
+        onEnter: (batch) => batch.forEach((item) => {
+          const dot = item.querySelector(".tl-dot");
+          const era = item.querySelector(".tl-era");
+          const title = item.querySelector(".tl-title");
+          const badge = item.querySelector(".tl-badge");
+          const desc = item.querySelector(".tl-desc");
+          const tech = item.querySelector(".tl-tech");
 
-            const tl = gsap.timeline();
-            if (dot) tl.fromTo(dot, { scale: 0 }, { scale: 1, duration: 0.4, ease: "back.out(2)" });
-            if (era) tl.fromTo(era, { x: -20, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, "-=0.2");
-            if (title) tl.fromTo(title, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, "-=0.3");
-            if (badge) tl.fromTo(badge, { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: "power3.out" }, "-=0.3");
-            if (desc) tl.fromTo(desc, { y: 15, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, "-=0.2");
-            if (tech) tl.fromTo(tech, { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" }, "-=0.2");
-          },
-        });
+          const tl = gsap.timeline();
+          if (dot) tl.fromTo(dot, { scale: 0 }, { scale: 1, duration: 0.3, ease: "back.out(2)" });
+          if (era) tl.fromTo(era, { x: -15, opacity: 0 }, { x: 0, opacity: 1, duration: 0.4, ease: "power3.out" }, "-=0.1");
+          if (title) tl.fromTo(title, { y: 15, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" }, "-=0.2");
+          if (badge) tl.fromTo(badge, { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "power3.out" }, "-=0.2");
+          if (desc) tl.fromTo(desc, { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" }, "-=0.15");
+          if (tech) tl.fromTo(tech, { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "power3.out" }, "-=0.15");
+        }),
       });
 
       // === Footer ===
@@ -416,9 +361,9 @@ export default function Home() {
         start: "top 90%",
         once: true,
         onEnter: () => {
-          gsap.fromTo(".footer-title", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" });
-          gsap.fromTo(".footer-email", { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power3.out", delay: 0.2 });
-          gsap.fromTo(".footer-link", { y: 15, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.1, duration: 0.5, ease: "power3.out", delay: 0.3 });
+          fadeIn(".footer-title", { duration: 0.6 });
+          fadeIn(".footer-email", { delay: 0.15 });
+          fadeIn(".footer-link", { stagger: 0.08, delay: 0.25 });
         },
       });
 
