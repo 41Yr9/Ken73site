@@ -130,7 +130,7 @@ const TIMELINE = [
 
 const LINKS = {
   github: "https://github.com/41Yr9",
-  x: "https://x.com/41yr12",
+  x: "https://x.com/41yr9",
   qiita: "https://qiita.com/41Yr9", // ユーザー名が違う場合は書き換えてください
   email: "mailto:kkappcreator@gmail.com",
   behance: "https://www.behance.net/NaiwaD",
