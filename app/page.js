@@ -224,7 +224,7 @@ const LINKS = {
   x: "https://x.com/41yr9",
   qiita: "https://qiita.com/41Yr9", // ユーザー名が違う場合は書き換えてください
   email: "mailto:kkappcreator@gmail.com",
-  behance: "https://www.behance.net/NaiwaD",
+  behance: "https://www.behance.net/41Yr9",
   appstore: "https://apps.apple.com/jp/app/diger/id6756227679",
 };
 
