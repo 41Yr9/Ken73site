@@ -452,7 +452,7 @@ a {
   transition: color 0.4s;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.65rem;
 }
 
 .marquee-item:hover {
@@ -498,9 +498,33 @@ a {
 }
 
 .skill-group-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
   font-size: 0.85rem;
   color: var(--text-muted);
   transition: color 0.3s, transform 0.3s var(--ease);
+}
+
+.skill-icon-wrap {
+  display: inline-flex;
+}
+
+.skill-icon {
+  width: 1.05rem;
+  height: 1.05rem;
+  flex: 0 0 1.05rem;
+  color: var(--skill-color, currentColor);
+}
+
+.skill-icon-fallback {
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  line-height: 1;
 }
 
 .skill-group-item:hover {
@@ -509,6 +533,39 @@ a {
 }
 
 /* ---- Projects ---- */
+.project-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+}
+
+.project-group-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.project-group-label {
+  margin-bottom: 0.45rem;
+  font-size: 0.6rem;
+  color: var(--text-dim);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.project-group-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.project-group-count {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  letter-spacing: 0.15em;
+}
+
 .project-list {
   display: flex;
   flex-direction: column;
@@ -1039,6 +1096,10 @@ a {
   .project-right {
     flex-direction: row;
     align-items: center;
+  }
+
+  .project-groups {
+    gap: 4rem;
   }
 
   .timeline {

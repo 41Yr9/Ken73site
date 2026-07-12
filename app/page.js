@@ -4,6 +4,25 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import dynamic from "next/dynamic";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import {
+  SiSwift,
+  SiReact,
+  SiTypescript,
+  SiNextdotjs,
+  SiPython,
+  SiFastapi,
+  SiDiscord,
+  SiPostgresql,
+  SiRedis,
+  SiClaudecode,
+  SiGooglegemini,
+  SiSupabase,
+  SiCloudflare,
+  SiDocker,
+  SiShopify,
+  SiRevenuecat,
+  SiGoogleadmob,
+} from "react-icons/si";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,30 +35,62 @@ const CursorParticles = dynamic(() => import("./CursorParticles"), { ssr: false 
 const GITHUB_USERNAME = "41Yr9";
 
 const SKILL_ICONS = {
-  "Swift": "🍎",
-  "React Native": "⚛️",
-  "TypeScript": "🔷",
-  "Next.js": "▲",
-  "Python": "🐍",
-  "Quart": "⚡",
-  "Discord.py": "🤖",
-  "PostgreSQL": "🐘",
-  "Claude Code": "🧠",
-  "Gemini AI": "✨",
-  "Supabase": "⚡",
-  "Cloudflare": "☁️",
-  "Docker": "🐳",
-  "Shopify": "🛒",
-  "RevenueCat": "💰",
-  "AdMob": "📊",
+  "Swift": SiSwift,
+  "React Native": SiReact,
+  "TypeScript": SiTypescript,
+  "Next.js": SiNextdotjs,
+  "Python": SiPython,
+  "FastAPI": SiFastapi,
+  "Discord.py": SiDiscord,
+  "PostgreSQL": SiPostgresql,
+  "Redis": SiRedis,
+  "Claude Code": SiClaudecode,
+  "Gemini AI": SiGooglegemini,
+  "Supabase": SiSupabase,
+  "Cloudflare": SiCloudflare,
+  "Docker": SiDocker,
+  "Shopify": SiShopify,
+  "RevenueCat": SiRevenuecat,
+  "AdMob": SiGoogleadmob,
 };
+
+const SKILL_COLORS = {
+  "Swift": "#f05138",
+  "React Native": "#149eca",
+  "TypeScript": "#3178c6",
+  "Next.js": "#111111",
+  "Python": "#3776ab",
+  "FastAPI": "#009688",
+  "Quart": "#4f46e5",
+  "Discord.py": "#5865f2",
+  "PostgreSQL": "#4169e1",
+  "Redis": "#ff4438",
+  "Claude Code": "#d97757",
+  "Gemini AI": "#8e75b2",
+  "Supabase": "#3fcf8e",
+  "Cloudflare": "#f38020",
+  "Docker": "#2496ed",
+  "Shopify": "#7ab55c",
+  "RevenueCat": "#f25a5a",
+  "AdMob": "#ea4335",
+};
+
+function SkillIcon({ name }) {
+  const Icon = SKILL_ICONS[name];
+
+  if (!Icon) {
+    return <span className="skill-icon skill-icon-fallback" aria-hidden="true">Q</span>;
+  }
+
+  return <Icon className="skill-icon" aria-hidden="true" />;
+}
 
 const SKILLS = {
   "モバイル & フロントエンド": [
     "Swift", "React Native", "TypeScript", "Next.js",
   ],
   "バックエンド & データベース": [
-    "Python", "Quart", "Discord.py", "PostgreSQL",
+    "Python", "FastAPI", "Quart", "Discord.py", "PostgreSQL", "Redis",
   ],
   "AI & クラウドサービス": [
     "Claude Code", "Gemini AI", "Supabase", "Cloudflare", "Docker", "Shopify", "RevenueCat", "AdMob",
@@ -48,66 +99,84 @@ const SKILLS = {
 
 const ALL_SKILLS = [
   "Swift", "React Native", "TypeScript", "Next.js",
-  "Python", "Quart", "Discord.py", "PostgreSQL",
+  "Python", "FastAPI", "Quart", "Discord.py", "PostgreSQL", "Redis",
   "Claude Code", "Gemini AI", "Supabase", "Cloudflare",
   "Docker", "Shopify", "RevenueCat", "AdMob",
 ];
 
 const PROJECTS = [
   {
-    num: "01",
+    num: "04",
     name: "Heya",
     sub: "友達の今を、そっと感じるSNS",
     desc: "近況を短い『状態』で共有し、気分に合う部屋で友達とゆるくつながれるiOSアプリ。ルーム、DM、プロフィール、AIアバター生成まで一貫して設計しています。",
     tags: ["Swift", "SwiftUI", "iOS"],
-    meta: ["プライベートSNS", "開発中"],
+    meta: ["プライベートSNS", "制作中"],
+    stage: "building",
     link: null,
     repo: null,
     img: "/images/heya-home.jpeg",
   },
   {
-    num: "02",
+    num: "01",
     name: "DiGer",
     sub: "古着タグAI鑑定アプリ",
     desc: "タグを撮影するだけで、AIがブランド・製造年代・市場価格を瞬時に判定するiOS/Androidアプリ。",
     tags: ["React Native", "TypeScript", "Gemini AI", "Supabase"],
     meta: ["App Store公開済み", "サブスク3プラン"],
+    stage: "live",
     link: "https://diger-link-gate.vercel.app/",
     repo: "diger-website",
     img: "/images/diger.png",
   },
   {
-    num: "03",
+    num: "05",
     name: "FormLab",
     sub: "AI筋トレフォーム解析",
     desc: "トレーニング動画をAIが解析し、姿勢・動作のスムーズさ・安全性を100点満点でスコアリング。",
     tags: ["Swift", "SwiftUI", "Gemini AI", "Cloudflare R2"],
     meta: ["クラウド履歴保存", "サブスク課金"],
+    stage: "building",
     link: "https://41Yr9.github.io/formlab-page/",
     repo: "formlab-page",
     img: "/images/formlab.png",
   },
   {
-    num: "04",
+    num: "02",
     name: "Vibeplus",
     sub: "Codex向け開発ワークフロープラグイン",
     desc: "要件整理、リスク分類、Planレビュー、実装、コードレビュー、Pull Request、知識保存までを一つの流れとして扱うCodexプラグイン。変更の危険度に応じて工程を調整します。",
     tags: ["Codex", "Python", "GitHub Actions"],
     meta: ["OSS", "Codex Plugin"],
+    stage: "live",
     link: "https://github.com/41Yr9/vibeplus",
     repo: "vibeplus",
     img: null,
   },
   {
-    num: "05",
+    num: "03",
     name: "Discord Bot 開発",
     sub: "趣味プロジェクト",
     desc: "技術習得とコミュニティ運営を目的に個人開発したDiscord Bot。非同期処理やWebダッシュボード構築を通じてバックエンド技術を実践的に学習。",
     tags: ["Python", "discord.py", "asyncio", "Quart", "Supabase", "Docker", "Cloudflare Tunnel"],
-    meta: ["個人開発", "技術習得・コミュニティ運営"],
+    meta: ["月間アクセス数 4K+", "個人開発"],
+    stage: "live",
     link: null,
     repo: null,
     img: "/images/discord.svg",
+  },
+];
+
+const PROJECT_GROUPS = [
+  {
+    key: "live",
+    title: "リリース済み・運用中",
+    label: "Released & Active",
+  },
+  {
+    key: "building",
+    title: "制作中",
+    label: "In Development",
   },
 ];
 
@@ -347,7 +416,7 @@ export default function Home() {
 
       // === Projects: row slide in ===
       ScrollTrigger.create({
-        trigger: ".project-list",
+        trigger: ".project-groups",
         start: "top 85%",
         once: true,
         onEnter: () => fadeIn(".project-item", { stagger: 0.12 }),
@@ -495,6 +564,9 @@ export default function Home() {
             {[...ALL_SKILLS, ...ALL_SKILLS].map((s, i) => (
               <span key={i} className="marquee-item">
                 {i > 0 && <span className="marquee-sep">●</span>}
+                <span className="skill-icon-wrap" style={{ "--skill-color": SKILL_COLORS[s] }}>
+                  <SkillIcon name={s} />
+                </span>
                 {s}
               </span>
             ))}
@@ -506,7 +578,12 @@ export default function Home() {
             <div key={cat} className="skill-group">
               <h3 className="skill-group-title">{cat}</h3>
               <div className="skill-group-list">
-                {list.map((s) => <span key={s} className="skill-group-item">{SKILL_ICONS[s] || "•"} {s}</span>)}
+                {list.map((s) => (
+                  <span key={s} className="skill-group-item" style={{ "--skill-color": SKILL_COLORS[s] }}>
+                    <SkillIcon name={s} />
+                    <span>{s}</span>
+                  </span>
+                ))}
               </div>
             </div>
           ))}
@@ -521,37 +598,56 @@ export default function Home() {
         <h2 className="section-title">プロジェクト</h2>
         <p className="section-desc">開発・公開・運用しているプロダクトと、その背景にある課題や設計意図を紹介します。</p>
 
-        <div className="project-list">
-          {PROJECTS.map((p) => {
-            const repo = repoData[p.repo];
-            const href = p.link || (p.repo ? `https://github.com/${GITHUB_USERNAME}/${p.repo}` : null);
-            const ProjectElement = href ? "a" : "article";
+        <div className="project-groups">
+          {PROJECT_GROUPS.map((group) => {
+            const projects = PROJECTS.filter((project) => project.stage === group.key);
+
             return (
-              <ProjectElement
-                key={p.num}
-                className={`project-item ${href ? "" : "project-item-static"}`}
-                {...(href ? { href, target: "_blank", rel: "noopener noreferrer" } : {})}
-              >
-                {p.img
-                  ? <img src={p.img} alt={p.name} className="project-img" />
-                  : <div className="project-mark" aria-hidden="true">{p.name.slice(0, 1)}</div>}
-                <span className="project-num">{p.num}</span>
-                <div className="project-info">
-                  <h3 className="project-title">{p.name}</h3>
-                  <p className="project-sub">{p.sub}</p>
-                  <p className="project-desc">{p.desc}</p>
-                  <div className="project-tags">
-                    {p.tags.map((t) => <span key={t} className="project-tag">{t}</span>)}
+              <div key={group.key} className="project-group">
+                <div className="project-group-heading">
+                  <div>
+                    <p className="project-group-label">{group.label}</p>
+                    <h3 className="project-group-title">{group.title}</h3>
                   </div>
+                  <span className="project-group-count">{String(projects.length).padStart(2, "0")}</span>
                 </div>
-                <div className="project-right">
-                  {p.meta.map((m) => <span key={m} className="project-meta">✦ {m}</span>)}
-                  {repo?.updated && <span className="project-meta">更新 {fmtDate(repo.updated)}</span>}
-                  {href
-                    ? <span className="project-arrow">↗</span>
-                    : <span className="project-status">In development</span>}
+
+                <div className="project-list">
+                  {projects.map((p) => {
+                    const repo = repoData[p.repo];
+                    const href = p.link || (p.repo ? `https://github.com/${GITHUB_USERNAME}/${p.repo}` : null);
+                    const ProjectElement = href ? "a" : "article";
+
+                    return (
+                      <ProjectElement
+                        key={p.num}
+                        className={`project-item ${href ? "" : "project-item-static"}`}
+                        {...(href ? { href, target: "_blank", rel: "noopener noreferrer" } : {})}
+                      >
+                        {p.img
+                          ? <img src={p.img} alt={p.name} className="project-img" />
+                          : <div className="project-mark" aria-hidden="true">{p.name.slice(0, 1)}</div>}
+                        <span className="project-num">{p.num}</span>
+                        <div className="project-info">
+                          <h3 className="project-title">{p.name}</h3>
+                          <p className="project-sub">{p.sub}</p>
+                          <p className="project-desc">{p.desc}</p>
+                          <div className="project-tags">
+                            {p.tags.map((t) => <span key={t} className="project-tag">{t}</span>)}
+                          </div>
+                        </div>
+                        <div className="project-right">
+                          {p.meta.map((m) => <span key={m} className="project-meta">✦ {m}</span>)}
+                          {repo?.updated && <span className="project-meta">更新 {fmtDate(repo.updated)}</span>}
+                          {href
+                            ? <span className="project-arrow">↗</span>
+                            : <span className="project-status">{p.stage === "building" ? "制作中" : "運用中"}</span>}
+                        </div>
+                      </ProjectElement>
+                    );
+                  })}
                 </div>
-              </ProjectElement>
+              </div>
             );
           })}
         </div>
